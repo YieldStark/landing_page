@@ -220,6 +220,13 @@ body {
   height: 300px;
 }
 
+.h2-style {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+
 .hero h2 {
   font-size: 3rem;
   margin-bottom: 20px;
@@ -372,7 +379,8 @@ body {
 
 .step-visual {
   position: relative;
-  margin-right: 30px;
+  margin-right: 40px;
+  min-width: 50px;
 }
 
 .step-circle {
@@ -401,7 +409,7 @@ body {
   align-items: center;
   justify-content: center;
   top: -10px;
-  left: 30px;
+  left: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   z-index: 1;
   animation: pulse 3s infinite;
@@ -430,6 +438,7 @@ body {
 
 .step-content {
   flex: 1;
+  padding-left: 10px;
 }
 
 .step-content h3 {
@@ -529,6 +538,13 @@ body {
   .step-visual {
     margin-right: 0;
     margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .step-icon-container {
+    left: 50px;
   }
   
   .step-content {

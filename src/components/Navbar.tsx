@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import Logo from './Logo';
-import useScrollToSection from '../hooks/useScrollToSection';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const scrollToSection = useScrollToSection();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleNavClick = (sectionId: string) => {
-    scrollToSection(sectionId);
-    setIsMenuOpen(false);
   };
 
   return (
@@ -32,27 +25,25 @@ const Navbar: React.FC = () => {
         
         <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
           <li className="navbar-item">
-            <a href="#home" className="navbar-link" onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}>Home</a>
+            <a href="#app" className="navbar-link">App</a>
           </li>
           <li className="navbar-item">
-            <a href="#features" className="navbar-link" onClick={(e) => { e.preventDefault(); handleNavClick('features'); }}>Features</a>
-          </li>
-          <li className="navbar-item">
-            <a href="#how-it-works" className="navbar-link" onClick={(e) => { e.preventDefault(); handleNavClick('how-it-works'); }}>How It Works</a>
+            <a href="#swap" className="navbar-link">Swap</a>
           </li>
           <li className="navbar-item">
             <a href="#docs" className="navbar-link">Docs</a>
           </li>
           <li className="navbar-item">
-            <a href="#contact" className="navbar-link" onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}>Contact</a>
-          </li>
-          <li className="navbar-item">
-            <a href="#app" className="navbar-button">Launch App</a>
+            <a href="#support" className="navbar-link">Support</a>
           </li>
         </ul>
+        
+        <div className="navbar-actions">
+          <a href="#app" className="navbar-button">Launch App</a>
+        </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar; 
+export default Navbar;

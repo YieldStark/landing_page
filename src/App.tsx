@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Logo from './components/Logo';
 import Navbar from './components/Navbar';
 import AnimatedBackground from './components/AnimatedBackground';
 import useScrollToSection from './hooks/useScrollToSection';
 import WaveBackground from './components/svg/WaveBackground';
-import HeroVisual from './components/HeroVisual';
-import './components/HeroVisual.css';
 import YieldOptimizationIcon from './components/svg/YieldOptimizationIcon';
 import SimplifiedExperienceIcon from './components/svg/SimplifiedExperienceIcon';
 import SecurityFirstIcon from './components/svg/SecurityFirstIcon';
 import LowGasIcon from './components/svg/LowGasIcon';
+import heroImage from './illustrations/hero_image.png';
+import FeaturesSection from './components/FeaturesSection';
+import btcImage from './illustrations/bitcoin.png';
+import joinVideo from './illustrations/join.mp4';
 
 function App() {
   const scrollToSection = useScrollToSection();
+  const heroRef = useRef<HTMLElement | null>(null);
+  const [isNavbarSticky, setIsNavbarSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroHeight = heroRef.current?.offsetHeight ?? 0;
+      setIsNavbarSticky(window.scrollY > heroHeight - 1);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleFooterLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
@@ -22,27 +36,27 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header" role="banner">
+      <div className={`hero-navbar-overlay ${isNavbarSticky ? 'sticky' : ''}`}>
         <Navbar />
-        <div className="container tagline-container">
-          <p className="tagline">Smart WBTC yield automation on Starknet</p>
-        </div>
-      </header>
+      </div>
       
       <main role="main">
-        <section className="hero" id="home" aria-labelledby="hero-heading">
+        <section className="hero" id="home" aria-labelledby="hero-heading" ref={heroRef}>
           <div className="hero-background">
             <AnimatedBackground />
           </div>
           <div className="container">
             <div className="hero-content">
               <div className="hero-text">
-                <h1 id="hero-heading" className="h2-style">Maximize Your Crypto Returns</h1>
-                <p>Deposit once, earn more through intelligent rebalancing across <a href="https://vesu.xyz" target="_blank" rel="noopener noreferrer">@vesuxyz</a> and <a href="https://ekubo.org" target="_blank" rel="noopener noreferrer">@EkuboProtocol</a></p>
-                <button className="cta-button" onClick={() => scrollToSection('features')} aria-label="Get Started with YieldStark">Get Started</button>
+                <h1 id="hero-heading" className="h2-style">Unifying Bitcoin DeFi Across Platforms</h1>
+                <p>Seamlessly connect and optimize your Bitcoin across multiple DeFi protocols with intelligent automation and cross-platform yield strategies.</p>
+                <div className="hero-actions">
+                  <button className="cta-button" onClick={() => scrollToSection('product-stack')} aria-label="Get Started with YieldStark">Get Started</button>
+                  <a href="#vision" className="vision-link">Our vision</a>
+                </div>
               </div>
               <div className="hero-visual-container" aria-hidden="true">
-                <HeroVisual />
+                <img src={heroImage} alt="YieldStark Hero" className="hero-image" />
               </div>
             </div>
           </div>
@@ -51,141 +65,120 @@ function App() {
           </div>
         </section>
         
-        <section className="features" id="features" aria-labelledby="features-heading">
+        {/* Features */}
+        <FeaturesSection />
+
+        {/* Bitcoin importance section */}
+        <section className="btc-importance" aria-labelledby="btc-importance-heading">
           <div className="container">
-            <h2 id="features-heading">Why Choose YieldStark</h2>
-            <div className="feature-grid">
-              <article className="feature">
-                <YieldOptimizationIcon width={80} height={80} className="feature-icon" aria-hidden="true" />
-                <h3>Smart Yield Optimization</h3>
-                <p>Intelligent rebalancing of your WBTC across multiple protocols for maximum returns</p>
-              </article>
-              <article className="feature">
-                <SimplifiedExperienceIcon width={80} height={80} className="feature-icon" aria-hidden="true" />
-                <h3>Simplified Experience</h3>
-                <p>Deposit once and let our automation handle the rest - no need for manual rebalancing</p>
-              </article>
-              <article className="feature">
-                <SecurityFirstIcon width={80} height={80} className="feature-icon" aria-hidden="true" />
-                <h3>Security First</h3>
-                <p>Built with security as a priority, leveraging the safety of Starknet's ZK infrastructure</p>
-              </article>
-              <article className="feature">
-                <LowGasIcon width={80} height={80} className="feature-icon" aria-hidden="true" />
-                <h3>Low Gas Fees</h3>
-                <p>Benefit from Starknet's Layer 2 scaling with minimal transaction costs for yield optimization</p>
-              </article>
+            <h2 id="btc-importance-heading">Bitcoin is the Most Important<br/>Asset of Our Generation</h2>
+            <div className="btc-content">
+              <div className="btc-image" aria-hidden="true">
+                <img src={btcImage} alt="Stylized Bitcoin art" />
+              </div>
+              <div className="btc-copy">
+                <p>
+                  Bitcoin reimagined global finance built upon mathematical guarantees, not trust in people.
+                </p>
+                <p>
+                  It inspired a $trillion+ ecosystem of blockchains and applications, yet barely participates in the
+                  onchain revolution it sparked.
+                </p>
+                <p>
+                  $2 trillion BTC sits in cold wallets; the ecosystem sees limited innovation. YieldStark is here to
+                  change this.
+                </p>
+              </div>
             </div>
           </div>
         </section>
-        
-        <section className="how-it-works" id="how-it-works" aria-labelledby="how-it-works-heading">
+
+        {/* Waitlist - simple form with video illustration */}
+        <section className="waitlist" id="waitlist" aria-labelledby="waitlist-heading">
           <div className="container">
-            <h2 id="how-it-works-heading">How It Works</h2>
-            <div className="process-flow">
-              <div className="process-step">
-                <div className="step-visual" aria-hidden="true">
-                  <div className="step-circle">
-                    <span>1</span>
-                  </div>
-                  <div className="step-icon-container">
-                    <i className="fa-solid fa-wallet"></i>
-                  </div>
-                </div>
-                <div className="step-content">
-                  <h3>Connect Wallet</h3>
-                  <p>Connect your Starknet wallet to our platform with a single click. We support all major Starknet wallets for a seamless connection experience.</p>
-                </div>
+            <div className="waitlist-grid">
+              <div className="waitlist-media" aria-hidden="true">
+                <video className="waitlist-video" src={joinVideo} autoPlay muted loop playsInline preload="auto" />
               </div>
-              
-              <div className="flow-arrow" aria-hidden="true">
-                <i className="fa-solid fa-chevron-down"></i>
-              </div>
-              
-              <div className="process-step">
-                <div className="step-visual" aria-hidden="true">
-                  <div className="step-circle">
-                    <span>2</span>
-                  </div>
-                  <div className="step-icon-container deposit-icon">
-                    <i className="fa-solid fa-coins"></i>
-                  </div>
-                </div>
-                <div className="step-content">
-                  <h3>Deposit WBTC</h3>
-                  <p>Make a single deposit of your WBTC into our smart vault. Your assets remain secure while our protocol manages them for optimal returns.</p>
-                </div>
-              </div>
-              
-              <div className="flow-arrow" aria-hidden="true">
-                <i className="fa-solid fa-chevron-down"></i>
-              </div>
-              
-              <div className="process-step">
-                <div className="step-visual" aria-hidden="true">
-                  <div className="step-circle">
-                    <span>3</span>
-                  </div>
-                  <div className="step-icon-container earn-icon">
-                    <i className="fa-solid fa-chart-line"></i>
-                  </div>
-                </div>
-                <div className="step-content">
-                  <h3>Earn Optimized Yield</h3>
-                  <p>Our protocol automatically rebalances your assets between Vesu and Ekubo protocols to maximize your returns based on market conditions.</p>
-                </div>
-              </div>
-              
-              <div className="process-highlight">
-                <div className="highlight-bubble">
-                  <i className="fa-solid fa-robot" aria-hidden="true"></i>
-                  <span>Automated Rebalancing</span>
-                </div>
-                <div className="highlight-bubble">
-                  <i className="fa-solid fa-lock" aria-hidden="true"></i>
-                  <span>Secure Storage</span>
-                </div>
-                <div className="highlight-bubble">
-                  <i className="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
-                  <span>Maximum Yield</span>
-                </div>
+              <div className="waitlist-form">
+                <h2 id="waitlist-heading">Join Waitlist</h2>
+                <form onSubmit={(e) => e.preventDefault()}>
+                  <label htmlFor="name">Name</label>
+                  <input id="name" name="name" type="text" placeholder="e.g. Satoshi Nakamoto" required />
+                  <label htmlFor="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="e.g. satoshi@bitcoin.org" required />
+                  <button type="submit" className="cta-button">Submit</button>
+                </form>
               </div>
             </div>
-          </div>
-          <div className="wave-container wave-bottom">
-            <WaveBackground />
           </div>
         </section>
       </main>
       
       <footer id="contact" role="contentinfo">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-logo">
-              <Logo size="small" />
+        <div className="footer-top">
+          <div className="container">
+            <div className="footer-copyright">
               <p>© {new Date().getFullYear()} YieldStark. All rights reserved.</p>
             </div>
-            <nav className="footer-links" aria-label="Footer Navigation">
-              <h3>Links</h3>
-              <ul>
-                <li><a href="#home" onClick={(e) => handleFooterLinkClick(e, 'home')}>Home</a></li>
-                <li><a href="#features" onClick={(e) => handleFooterLinkClick(e, 'features')}>Features</a></li>
-                <li><a href="#how-it-works" onClick={(e) => handleFooterLinkClick(e, 'how-it-works')}>How It Works</a></li>
-                <li><a href="#docs">Documentation</a></li>
-              </ul>
-            </nav>
             <div className="footer-social">
-              <h3>Connect</h3>
-              <div className="social-icons">
-                <a href="https://x.com/YieldStark" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                  <i className="fa-brands fa-x-twitter" aria-hidden="true"></i> Twitter
-                </a>
-                <a href="mailto:yieldstark@gmail.com" aria-label="Email">
-                  <i className="fa-regular fa-envelope" aria-hidden="true"></i> Email
-                </a>
-                <a href="https://github.com/YieldStark" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <i className="fa-brands fa-github" aria-hidden="true"></i> GitHub
-                </a>
+              <a href="https://x.com/YieldStark" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <i className="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://discord.gg/yieldstark" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                <i className="fa-brands fa-discord"></i>
+              </a>
+              <a href="https://t.me/yieldstark" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                <i className="fa-brands fa-telegram"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="footer-main">
+          <div className="container">
+            <div className="footer-content">
+              <div className="footer-about">
+                <h3>About YieldStark</h3>
+                <p>YieldStark is building the future of Bitcoin DeFi, unlocking the full potential of the most important asset of our generation through intelligent automation and cross-platform yield strategies.</p>
+                <p>Founded in 2025, YieldStark pioneers Bitcoin's integration into DeFi with advanced vault technology, cross-protocol rebalancing, and institutional-grade security.</p>
+                <p>Today, YieldStark is building full-stack infrastructure to accelerate onchain BTC adoption by holders, protocols, and platforms. Built and backed by digital asset leaders, including top DeFi protocols, institutions, and exchanges.</p>
+              </div>
+              
+              <div className="footer-links">
+                <h3>YieldStark</h3>
+                <ul>
+                  <li><a href="#home" onClick={(e) => handleFooterLinkClick(e, 'home')}>Home</a></li>
+                  <li><a href="#features" onClick={(e) => handleFooterLinkClick(e, 'features')}>Features</a></li>
+                  <li><a href="#waitlist" onClick={(e) => handleFooterLinkClick(e, 'waitlist')}>Waitlist</a></li>
+                  <li><a href="#docs">Documentation</a></li>
+                  <li><a href="#blog">Blog</a></li>
+                  <li><a href="#brand">Brand Kit</a></li>
+                </ul>
+              </div>
+              
+              <div className="footer-products">
+                <h3>Products</h3>
+                <ul>
+                  <li><a href="#app">YieldStark App</a></li>
+                  <li><a href="#vault">YieldStark Vault</a></li>
+                  <li><a href="#rebalancing">Cross-Protocol Rebalancing</a></li>
+                  <li><a href="#staking">Bitcoin Staking</a></li>
+                  <li><a href="#bridge">Cross-Chain Bridge</a></li>
+                  <li><a href="#security">Security</a></li>
+                  <li><a href="#audits">Audits</a></li>
+                </ul>
+              </div>
+              
+              <div className="footer-legal">
+                <h3>Legal</h3>
+                <ul>
+                  <li><a href="#terms">Terms & Conditions</a></li>
+                  <li><a href="#privacy">Privacy Policy</a></li>
+                  <li><a href="#cookies">Cookie Policy</a></li>
+                  <li><a href="#disclaimer">Risk Disclaimer</a></li>
+                  <li><a href="#compliance">Compliance</a></li>
+                </ul>
               </div>
             </div>
           </div>

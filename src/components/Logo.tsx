@@ -28,6 +28,7 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium' }) => {
       fontWeight: 'bold' as const,
       fontSize: size === 'small' ? '14px' : size === 'medium' ? '18px' : '24px',
       color: 'white',
+      textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
     }
   };
 

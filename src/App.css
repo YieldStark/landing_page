@@ -6,9 +6,24 @@
 .waitlist-video { width: 100%; height: 100%; min-height: 500px; border-radius: 18px; filter: saturate(125%) contrast(110%); box-shadow: none; object-fit: cover; }
 .waitlist-form h2 { font-size: 2rem; margin-bottom: 16px; color: #0F1A1F; text-align: left; }
 .waitlist-form form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
-.waitlist-form input[type="text"], .waitlist-form input[type="email"] { width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.15); background: #fff; color: #0F1A1F; }
+
+/* Honeypot field - hidden from users to catch bots */
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.waitlist-form input[type="text"], .waitlist-form input[type="email"] { width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.15); background: #fff; color: #0F1A1F; transition: border-color 0.3s ease, opacity 0.3s ease; }
+.waitlist-form input[type="text"]:disabled, .waitlist-form input[type="email"]:disabled { opacity: 0.6; cursor: not-allowed; }
 .waitlist-form label { font-weight: 600; }
 .waitlist .cta-button { align-self: flex-start; }
+.waitlist .cta-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Form message styles */
+.form-message { margin-top: 12px; padding: 12px 16px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; animation: slideIn 0.3s ease; }
+.form-message.success { background: rgba(34, 197, 94, 0.1); color: #16a34a; border: 1px solid rgba(34, 197, 94, 0.3); }
+.form-message.error { background: rgba(239, 68, 68, 0.1); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 @media (max-width: 768px) {
   .waitlist-grid { grid-template-columns: 1fr; }

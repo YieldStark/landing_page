@@ -18,7 +18,6 @@ function App() {
   const heroRef = useRef<HTMLElement | null>(null);
   const [isNavbarSticky, setIsNavbarSticky] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,84 +34,11 @@ function App() {
     scrollToSection(sectionId);
   };
 
-  const handleWaitlistSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitMessage(null);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const name = (formData.get('name') as string || '').trim();
-    const email = (formData.get('email') as string || '').trim();
-    const honey = formData.get('honeypot') as string || '';
-
-    // Honeypot check - if filled, it's likely a bot
-    if (honey) {
-      setSubmitMessage({ type: 'success', text: '🎉 Thank you! You\'ve been added to the waitlist.' });
-      form.reset();
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^(?:[a-zA-Z0-9_'^&+%-]+(?:\.[a-zA-Z0-9_'^&+%-]+)*)@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      setSubmitMessage({ type: 'error', text: 'Please enter a valid email address.' });
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Name validation - provide default if empty
-    const finalName = name || 'User';
-
-    const webhookUrl = process.env.REACT_APP_HOOK_URL;
-    const routerKey = process.env.REACT_APP_ROUTER_API_KEY;
-
-    if (!webhookUrl || !routerKey) {
-      console.error('Missing environment variables');
-      setSubmitMessage({ type: 'error', text: 'Configuration error. Please contact support.' });
-      setIsSubmitting(false);
-      return;
-    }
-    
-    // Use CORS proxy ONLY on localhost (production uses direct connection)
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const finalUrl = isLocalhost ? `https://corsproxy.io/?${encodeURIComponent(webhookUrl)}` : webhookUrl;
-
-    try {
-      const payload = {
-        'Name': finalName,
-        'Email ': email
-      };
-      
-      const response = await fetch(finalUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${routerKey}`
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        setSubmitMessage({ type: 'success', text: '🎉 Thanks! You are on the list.' });
-        form.reset();
-      } else {
-        throw new Error('Submission failed');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitMessage({ type: 'error', text: 'Submission failed. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="App">
       <div className={`hero-navbar-overlay ${isNavbarSticky ? 'sticky' : ''}`}>
         <Navbar />
-      </div>
+        </div>
       
       <main role="main">
         <section className="hero" id="home" aria-labelledby="hero-heading" ref={heroRef}>
@@ -173,26 +99,20 @@ function App() {
             <div className="waitlist-grid">
               <div className="waitlist-media" aria-hidden="true">
                 <video className="waitlist-video" src={joinVideo} autoPlay muted loop playsInline preload="auto" />
-              </div>
+                  </div>
               <div className="waitlist-form">
                 <h2 id="waitlist-heading">Join Waitlist</h2>
-                <form onSubmit={handleWaitlistSubmit}>
-                  {/* Honeypot field - hidden from users, catches bots */}
-                  <input 
-                    type="text" 
-                    name="honeypot" 
-                    className="honeypot" 
-                    tabIndex={-1} 
-                    autoComplete="off"
-                    aria-hidden="true"
-                  />
+                <form 
+                  action={process.env.REACT_APP_FORMSPREE_ENDPOINT}
+                  method="POST"
+                >
                   <label htmlFor="name">Name</label>
                   <input 
                     id="name" 
                     name="name" 
                     type="text" 
                     placeholder="Enter your name" 
-                    disabled={isSubmitting}
+                    required
                     autoComplete="name"
                   />
                   <label htmlFor="email">Email</label>
@@ -202,21 +122,22 @@ function App() {
                     type="email" 
                     placeholder="Enter your email" 
                     required 
-                    disabled={isSubmitting}
                     autoComplete="email"
                   />
                   <button 
                     type="submit" 
-                    className="cta-button" 
-                    disabled={isSubmitting}
+                    className="cta-button"
+                    onClick={() => setIsSubmitting(true)}
                   >
-                    {isSubmitting ? 'Joining…' : 'Join waitlist'}
+                    {isSubmitting ? (
+                      <>
+                        <span className="spinner"></span>
+                        Joining...
+                      </>
+                    ) : (
+                      'Join waitlist'
+                    )}
                   </button>
-                  {submitMessage && (
-                    <div className={`form-message ${submitMessage.type}`}>
-                      {submitMessage.text}
-              </div>
-                  )}
                 </form>
                 <p style={{ fontSize: '0.75rem', color: '#666', marginTop: '12px' }}>
                   No spam. Unsubscribe anytime.
@@ -248,22 +169,22 @@ function App() {
         </div>
         
         <div className="footer-main">
-          <div className="container">
-            <div className="footer-content">
+        <div className="container">
+          <div className="footer-content">
               <div className="footer-about">
                 <h3>About YieldStark</h3>
                 <p>YieldStark is building the future of Bitcoin DeFi, unlocking the full potential of the most important asset of our generation through intelligent automation and cross-platform yield strategies.</p>
                 <p>Founded in 2025, YieldStark pioneers Bitcoin's integration into DeFi with advanced vault technology, cross-protocol rebalancing, and institutional-grade security.</p>
                 <p>Today, YieldStark is building full-stack infrastructure to accelerate onchain BTC adoption by holders, protocols, and platforms. Built and backed by digital asset leaders, including top DeFi protocols, institutions, and exchanges.</p>
-              </div>
+            </div>
               
               <div className="footer-links">
                 <h3>YieldStark</h3>
-                <ul>
-                  <li><a href="#home" onClick={(e) => handleFooterLinkClick(e, 'home')}>Home</a></li>
-                  <li><a href="#features" onClick={(e) => handleFooterLinkClick(e, 'features')}>Features</a></li>
+              <ul>
+                <li><a href="#home" onClick={(e) => handleFooterLinkClick(e, 'home')}>Home</a></li>
+                <li><a href="#features" onClick={(e) => handleFooterLinkClick(e, 'features')}>Features</a></li>
                   <li><a href="#waitlist" onClick={(e) => handleFooterLinkClick(e, 'waitlist')}>Waitlist</a></li>
-                  <li><a href="#docs">Documentation</a></li>
+                <li><a href="#docs">Documentation</a></li>
                   <li><a href="#blog">Blog</a></li>
                   <li><a href="#brand">Brand Kit</a></li>
                 </ul>
@@ -290,7 +211,7 @@ function App() {
                   <li><a href="#cookies">Cookie Policy</a></li>
                   <li><a href="#disclaimer">Risk Disclaimer</a></li>
                   <li><a href="#compliance">Compliance</a></li>
-                </ul>
+              </ul>
               </div>
             </div>
           </div>

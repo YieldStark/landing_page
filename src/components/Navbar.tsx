@@ -25,21 +25,21 @@ const Navbar: React.FC = () => {
         
         <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
           <li className="navbar-item">
-            <a href="#app" className="navbar-link">App</a>
+            <a href="https://app.yieldstark.xyz/" className="navbar-link" target="_blank" rel="noopener noreferrer">App</a>
           </li>
           <li className="navbar-item">
-            <a href="#swap" className="navbar-link">Swap</a>
+            <a href="https://app.yieldstark.xyz/swap" className="navbar-link" target="_blank" rel="noopener noreferrer">Swap</a>
           </li>
           <li className="navbar-item">
             <a href="#docs" className="navbar-link">Docs</a>
           </li>
           <li className="navbar-item">
-            <a href="#support" className="navbar-link">Support</a>
+            <a href="#contact" className="navbar-link">Support</a>
           </li>
         </ul>
         
         <div className="navbar-actions">
-          <a href="#app" className="navbar-button">Launch App</a>
+          <a href="https://app.yieldstark.xyz/" className="navbar-button" target="_blank" rel="noopener noreferrer">Launch App</a>
         </div>
       </div>
     </nav>

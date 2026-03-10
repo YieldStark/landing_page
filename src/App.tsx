@@ -37,9 +37,13 @@ function App() {
   return (
     <div className="App">
       <div className={`hero-navbar-overlay ${isNavbarSticky ? 'sticky' : ''}`}>
+        <a href="https://app.yieldstark.xyz/" className="mainnet-banner" target="_blank" rel="noopener noreferrer" aria-label="YieldStark mainnet live – open app">
+          <span className="mainnet-banner-live">Mainnet live</span>
+          <span className="mainnet-banner-text">Earn up to 40% APY on your Bitcoin · Swap, lend, provide liquidity</span>
+        </a>
         <Navbar />
-        </div>
-      
+      </div>
+
       <main role="main">
         <section className="hero" id="home" aria-labelledby="hero-heading" ref={heroRef}>
           <div className="hero-background">
@@ -51,7 +55,7 @@ function App() {
                 <h1 id="hero-heading" className="h2-style">Unifying Bitcoin DeFi Across Platforms</h1>
                 <p>Seamlessly connect and optimize your Bitcoin across multiple DeFi protocols with intelligent automation and cross-platform yield strategies.</p>
                 <div className="hero-actions">
-                  <button className="cta-button" onClick={() => scrollToSection('product-stack')} aria-label="Get Started with YieldStark">Get Started</button>
+                  <a href="https://app.yieldstark.xyz/" className="cta-button" target="_blank" rel="noopener noreferrer" aria-label="Get Started with YieldStark">Get Started</a>
                   <a href="#vision" className="vision-link">Our vision</a>
                 </div>
               </div>
@@ -64,11 +68,9 @@ function App() {
             <WaveBackground />
           </div>
         </section>
-        
-        {/* Features */}
+
         <FeaturesSection />
 
-        {/* Bitcoin importance section */}
         <section className="btc-importance" aria-labelledby="btc-importance-heading">
           <div className="container">
             <h2 id="btc-importance-heading">Bitcoin is the Most Important<br/>Asset of Our Generation</h2>
@@ -92,40 +94,39 @@ function App() {
             </div>
           </div>
         </section>
-        
-        {/* Waitlist - simple form with video illustration */}
+
         <section className="waitlist" id="waitlist" aria-labelledby="waitlist-heading">
           <div className="container">
             <div className="waitlist-grid">
               <div className="waitlist-media" aria-hidden="true">
                 <video className="waitlist-video" src={joinVideo} autoPlay muted loop playsInline preload="auto" />
-                  </div>
+              </div>
               <div className="waitlist-form">
                 <h2 id="waitlist-heading">Join Waitlist</h2>
-                <form 
+                <form
                   action={process.env.REACT_APP_FORMSPREE_ENDPOINT}
                   method="POST"
                 >
                   <label htmlFor="name">Name</label>
-                  <input 
-                    id="name" 
-                    name="name" 
-                    type="text" 
-                    placeholder="Enter your name" 
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
                     required
                     autoComplete="name"
                   />
                   <label htmlFor="email">Email</label>
-                  <input 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    placeholder="Enter your email" 
-                    required 
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    required
                     autoComplete="email"
                   />
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="cta-button"
                     onClick={() => setIsSubmitting(true)}
                   >
@@ -147,71 +148,42 @@ function App() {
           </div>
         </section>
       </main>
-      
+
       <footer id="contact" role="contentinfo">
         <div className="footer-top">
-        <div className="container">
+          <div className="container">
             <div className="footer-copyright">
               <p>© {new Date().getFullYear()} YieldStark. All rights reserved.</p>
             </div>
             <div className="footer-social">
-                <a href="https://x.com/YieldStark" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+              <a href="https://x.com/yieldstark" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                 <i className="fa-brands fa-x-twitter"></i>
               </a>
-              <a href="https://discord.gg/yieldstark" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-                <i className="fa-brands fa-discord"></i>
-              </a>
-              <a href="https://t.me/yieldstark" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <a href="https://t.me/+ZTV7qYFfdU43NTU0" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
                 <i className="fa-brands fa-telegram"></i>
               </a>
             </div>
           </div>
         </div>
-        
+
         <div className="footer-main">
-        <div className="container">
-          <div className="footer-content">
+          <div className="container">
+            <div className="footer-content">
               <div className="footer-about">
                 <h3>About YieldStark</h3>
                 <p>YieldStark is building the future of Bitcoin DeFi, unlocking the full potential of the most important asset of our generation through intelligent automation and cross-platform yield strategies.</p>
                 <p>Founded in 2025, YieldStark pioneers Bitcoin's integration into DeFi with advanced vault technology, cross-protocol rebalancing, and institutional-grade security.</p>
                 <p>Today, YieldStark is building full-stack infrastructure to accelerate onchain BTC adoption by holders, protocols, and platforms. Built and backed by digital asset leaders, including top DeFi protocols, institutions, and exchanges.</p>
-            </div>
-              
-              <div className="footer-links">
-                <h3>YieldStark</h3>
-              <ul>
-                <li><a href="#home" onClick={(e) => handleFooterLinkClick(e, 'home')}>Home</a></li>
-                <li><a href="#features" onClick={(e) => handleFooterLinkClick(e, 'features')}>Features</a></li>
-                  <li><a href="#waitlist" onClick={(e) => handleFooterLinkClick(e, 'waitlist')}>Waitlist</a></li>
-                <li><a href="#docs">Documentation</a></li>
-                  <li><a href="#blog">Blog</a></li>
-                  <li><a href="#brand">Brand Kit</a></li>
-                </ul>
               </div>
-              
-              <div className="footer-products">
-                <h3>Products</h3>
+
+              <div className="footer-support" id="support">
+                <h3>Support</h3>
+                <p className="footer-support-intro">Get help and contact us</p>
+                <p>For questions and support:</p>
                 <ul>
-                  <li><a href="#app">YieldStark App</a></li>
-                  <li><a href="#vault">YieldStark Vault</a></li>
-                  <li><a href="#rebalancing">Cross-Protocol Rebalancing</a></li>
-                  <li><a href="#staking">Bitcoin Staking</a></li>
-                  <li><a href="#bridge">Cross-Chain Bridge</a></li>
-                  <li><a href="#security">Security</a></li>
-                  <li><a href="#audits">Audits</a></li>
+                  <li><a href="https://t.me/+ZTV7qYFfdU43NTU0" target="_blank" rel="noopener noreferrer">Join Telegram community</a></li>
+                  <li><a href="https://x.com/YieldStark" target="_blank" rel="noopener noreferrer">Follow on X</a></li>
                 </ul>
-              </div>
-              
-              <div className="footer-legal">
-                <h3>Legal</h3>
-                <ul>
-                  <li><a href="#terms">Terms & Conditions</a></li>
-                  <li><a href="#privacy">Privacy Policy</a></li>
-                  <li><a href="#cookies">Cookie Policy</a></li>
-                  <li><a href="#disclaimer">Risk Disclaimer</a></li>
-                  <li><a href="#compliance">Compliance</a></li>
-              </ul>
               </div>
             </div>
           </div>

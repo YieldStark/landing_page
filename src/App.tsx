@@ -2,19 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import AnimatedBackground from './components/AnimatedBackground';
-import useScrollToSection from './hooks/useScrollToSection';
 import WaveBackground from './components/svg/WaveBackground';
-import YieldOptimizationIcon from './components/svg/YieldOptimizationIcon';
-import SimplifiedExperienceIcon from './components/svg/SimplifiedExperienceIcon';
-import SecurityFirstIcon from './components/svg/SecurityFirstIcon';
-import LowGasIcon from './components/svg/LowGasIcon';
 import heroImage from './illustrations/hero_image.png';
 import FeaturesSection from './components/FeaturesSection';
 import btcImage from './illustrations/bitcoin.png';
 import joinVideo from './illustrations/join.mp4';
 
 function App() {
-  const scrollToSection = useScrollToSection();
   const heroRef = useRef<HTMLElement | null>(null);
   const [isNavbarSticky, setIsNavbarSticky] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,11 +22,6 @@ function App() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleFooterLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault();
-    scrollToSection(sectionId);
-  };
 
   return (
     <div className="App">

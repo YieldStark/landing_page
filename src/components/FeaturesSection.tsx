@@ -59,16 +59,6 @@ const features: Feature[] = [
 ];
 
 // Animation variants with proper typing
-const fadeInUp: Variants = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 }
-};
-
-const fadeInScale: Variants = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 }
-};
-
 const staggerContainer: Variants = {
   animate: {
     transition: {
